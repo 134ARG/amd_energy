@@ -183,7 +183,7 @@ static umode_t amd_energy_is_visible(const void *_data,
 				     enum hwmon_sensor_types type,
 				     u32 attr, int channel)
 {
-	return 0440;
+	return 0444;
 }
 
 static int energy_accumulator(void *p)
@@ -345,14 +345,14 @@ static int amd_energy_probe(struct platform_device *pdev)
 	return PTR_ERR_OR_ZERO(data->wrap_accumulate);
 }
 
-static int amd_energy_remove(struct platform_device *pdev)
+static void amd_energy_remove(struct platform_device *pdev)
 {
 	struct amd_energy_data *data = dev_get_drvdata(&pdev->dev);
 
 	if (data && data->wrap_accumulate)
 		kthread_stop(data->wrap_accumulate);
 
-	return 0;
+	return;
 }
 
 static const struct platform_device_id amd_energy_ids[] = {
@@ -383,6 +383,7 @@ static const struct x86_cpu_id cpu_ids[] __initconst = {
 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 0x1A, 0x10, NULL),
 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 0x1A, 0x02, NULL),
 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 0x1A, 0x11, NULL),
+	X86_MATCH_VENDOR_FAM_MODEL(AMD, 0x1A, 0x44, NULL),
 	{}
 };
 MODULE_DEVICE_TABLE(x86cpu, cpu_ids);
